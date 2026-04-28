@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preview — AI Doc Extractor</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Full-height spreadsheet layout ─────────────────────────────────── */
+    html, body { height: 100%; overflow: hidden; }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Preview toolbar ─────────────────────────────────────────────────── */
+    .preview-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      flex-wrap: wrap;
+      z-index: 100;
+    }
+
+    .preview-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .file-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.28);
+      color: var(--accent);
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 2px;
+      letter-spacing: 0.3px;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .preview-actions { display: flex; gap: 8px; align-items: center; }
+
+    /* ── Sheet tab bar ───────────────────────────────────────────────────── */
+    .sheet-tabs {
+      flex-shrink: 0;
+      display: flex;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      overflow-x: auto;
+    }
+
+    .sheet-tab {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+      user-select: none;
+    }
+
+    .sheet-tab:hover { color: var(--text); }
+
+    .sheet-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(245,166,35,0.04);
+    }
+
+    .tab-icon { font-size: 13px; line-height: 1; }
+
+    /* ── Sheet panels (scrollable area) ──────────────────────────────────── */
+    .sheet-body {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .sheet-body::-webkit-scrollbar { width: 8px; }
+    .sheet-body::-webkit-scrollbar-track { background: var(--bg); }
+    .sheet-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .sheet-panel { display: none; padding: 24px; animation: fadeIn 0.18s ease; }
+    .sheet-panel.active { display: block; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ── Stats bar ───────────────────────────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      gap: 28px;
+      padding-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item { display: flex; flex-direction: column; }
+
+    .stat-val {
+      font-family: var(--mono);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* ── Spreadsheet wrapper ─────────────────────────────────────────────── */
+    .ss-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .ss-wrap::-webkit-scrollbar { height: 6px; }
+    .ss-wrap::-webkit-scrollbar-track { background: var(--surface); }
+    .ss-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── Spreadsheet table ───────────────────────────────────────────────── */
+    .ss-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    /* Row numbers */
+    .row-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      background: var(--surface2);
+      border-right: 1px solid var(--border);
+      padding: 0 10px;
+      min-width: 38px;
+      text-align: right;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    /* Column headers */
+    .col-head {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--surface2);
+      border-bottom: 2px solid var(--border);
+      border-right: 1px solid rgba(255,255,255,0.05);
+      padding: 10px 16px;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .corner-cell {
+      background: var(--bg);
+      border-right: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 0;
+      left: 0;
+      z-index: 3;
+    }
+
+    /* Data cells */
+    .ss-table td:not(.row-num):not(.col-head):not(.corner-cell) {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid rgba(255,255,255,0.03);
+      color: var(--text);
+      max-width: 400px;
+      word-break: break-word;
+      vertical-align: top;
+    }
+
+    .ss-table tr:hover td:not(.row-num):not(.col-head) {
+      background: rgba(245,166,35,0.025);
+    }
+
+    .ss-table tr:hover .row-num {
+      color: var(--accent);
+      background: rgba(245,166,35,0.07);
+    }
+
+    /* Cell type variants */
+    .cell-label {
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 12px;
+      background: var(--surface2) !important;
+      white-space: nowrap;
+    }
+
+    .cell-value  { color: var(--text); }
+
+    .cell-money {
+      font-family: var(--mono);
+      color: var(--accent);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .cell-num {
+      font-family: var(--mono);
+      text-align: right;
+    }
+
+    .cell-null {
+      color: var(--muted);
+      font-style: italic;
+      font-size: 12px;
+    }
+
+    .cell-total {
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--accent);
+      text-align: right;
+      background: rgba(245,166,35,0.06) !important;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+    }
+
+    .cell-total-label {
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: rgba(245,166,35,0.06) !important;
+    }
+
+    /* ── Summary sheet title row ─────────────────────────────────────────── */
+    .summary-sheet-title {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      padding: 16px 20px;
+      background: rgba(245,166,35,0.05);
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.3px;
+    }
+
+    /* ── JSON sheet ──────────────────────────────────────────────────────── */
+    .json-sheet-wrap {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .json-sheet-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .json-raw {
+      background: var(--bg);
+      padding: 24px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.8;
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+
+    .json-raw::-webkit-scrollbar { width: 6px; height: 6px; }
+    .json-raw::-webkit-scrollbar-track { background: var(--surface); }
+    .json-raw::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── Empty state ─────────────────────────────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 64px 24px;
+      color: var(--muted);
+    }
+
+    .empty-state .es-icon { font-size: 40px; opacity: 0.35; margin-bottom: 14px; }
+
+    /* ── No-data fallback ────────────────────────────────────────────────── */
+    .no-data-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 48px 24px;
+      gap: 0;
+    }
+
+    .no-data-wrap .nd-icon { font-size: 48px; opacity: 0.3; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<!-- ── Toolbar ────────────────────────────────────────────────────────────── -->
+<div class="preview-header">
+  <div class="preview-title">
+    <span style="color:var(--accent); font-size:15px;">⊞</span>
+    <span>Workbook Preview</span>
+    <span class="file-chip" id="preview-file-badge">—</span>
+  </div>
+  <div class="preview-actions">
+    <a href="result.html" class="btn btn-ghost text-sm">← Results</a>
+    <a href="upload.html" class="btn btn-outline text-sm">↑ Extract Another</a>
+    <a href="#" class="btn btn-primary" id="preview-download-btn">↓ Download .xlsx</a>
+  </div>
+</div>
+
+<!-- ── Sheet tabs ─────────────────────────────────────────────────────────── -->
+<div class="sheet-tabs" id="sheet-tabs">
+  <button class="sheet-tab active" data-sheet="summary">
+    <span class="tab-icon">☰</span> Summary
+  </button>
+  <button class="sheet-tab" data-sheet="items">
+    <span class="tab-icon">≡</span> Line Items
+  </button>
+  <button class="sheet-tab" data-sheet="json">
+    <span class="tab-icon">{}</span> Raw JSON
+  </button>
+</div>
+
+<!-- ── Scrollable sheet body ──────────────────────────────────────────────── -->
+<div class="sheet-body">
+
+  <!-- Summary panel -->
+  <div class="sheet-panel active" id="panel-summary">
+    <div id="summary-content"></div>
+  </div>
+
+  <!-- Line Items panel -->
+  <div class="sheet-panel" id="panel-items">
+    <div id="items-content"></div>
+  </div>
+
+  <!-- Raw JSON panel -->
+  <div class="sheet-panel" id="panel-json">
+    <div id="json-content"></div>
+  </div>
+
+  <!-- No-data fallback (shown when sessionStorage is empty) -->
+  <div class="no-data-wrap hidden" id="no-data-card">
+    <div class="nd-icon">⊞</div>
+    <h2 style="margin-bottom:8px;">No workbook to preview</h2>
+    <p style="margin-bottom:24px; max-width:360px;">
+      Process a document first — the extracted workbook will appear here.
+    </p>
+    <a href="upload.html" class="btn btn-primary">↑ Upload a Document</a>
+  </div>
+
+</div><!-- .sheet-body -->
+
+<script src="main.js"></script>
+</body>
+</html>
