@@ -5,31 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Doc Extractor</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
 
-<header class="site-header">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
   <a href="index.html" class="logo">
     <div class="logo-mark">AI</div>
     <span class="logo-text">DOC<span>.</span>EXTRACT</span>
   </a>
-  <nav>
+  <nav role="navigation">
     <a href="index.html" class="active">Home</a>
     <a href="upload.html">Extract</a>
     <a href="preview.html">Preview</a>
   </nav>
 </header>
 
-<main class="page" style="justify-content: flex-start; padding-top: 72px;">
+<main class="page page-home" role="main" id="main-content">
   <div class="container">
 
     <div class="page-label">AI-Powered Extraction</div>
     <h1>Documents → Structured<br>Excel Data</h1>
-    <h3>Upload any PDF or image. Extract structured fields.<br>Download a clean Excel spreadsheet in seconds.</h3>
+    <h2>Upload any PDF or image. Extract structured fields.<br>Download a clean Excel spreadsheet in seconds.</h2>
 
-    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+    <div class="hero-buttons">
       <a href="upload.html" class="btn btn-primary btn-lg">
-        <span>↑</span> Start Extracting
+        <span aria-hidden="true">↑</span> Start Extracting
       </a>
       <a href="#how" class="btn btn-outline btn-lg">How it works</a>
     </div>
@@ -53,50 +56,50 @@
 
     <h2>How it works</h2>
 
-    <div style="display:flex; flex-direction:column; gap:0; margin-top:20px;">
-      <div class="step-row" style="display:flex; gap:20px; padding:20px 0; border-bottom:1px solid var(--border);">
-        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--accent);min-width:40px;line-height:1;">01</div>
+    <div class="steps-container">
+      <div class="step-row">
+        <div class="step-number">01</div>
         <div>
-          <div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-bottom:4px;">Upload your document</div>
-          <p style="font-size:13px;">Drop a PDF invoice, receipt, form, or any image. Supports PDF, PNG, JPG, WEBP, TIFF up to 20 MB.</p>
+          <div class="step-title label-accent">Upload your document</div>
+          <p class="step-desc text-sm">Drop a PDF invoice, receipt, form, or any image. Supports PDF, PNG, JPG, WEBP, TIFF up to 20 MB.</p>
         </div>
       </div>
-      <div class="step-row" style="display:flex; gap:20px; padding:20px 0; border-bottom:1px solid var(--border);">
-        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--accent);min-width:40px;line-height:1;">02</div>
+      <div class="step-row">
+        <div class="step-number">02</div>
         <div>
-          <div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-bottom:4px;">Text extraction</div>
-          <p style="font-size:13px;">PDFs are parsed directly. Images run through Tesseract OCR. Raw text is captured with high accuracy.</p>
+          <div class="step-title label-accent">Text extraction</div>
+          <p class="step-desc">PDFs are parsed directly. Images run through Tesseract OCR. Raw text is captured with high accuracy.</p>
         </div>
       </div>
-      <div class="step-row" style="display:flex; gap:20px; padding:20px 0; border-bottom:1px solid var(--border);">
-        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--accent);min-width:40px;line-height:1;">03</div>
+      <div class="step-row">
+        <div class="step-number">03</div>
         <div>
-          <div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-bottom:4px;">LLM structuring</div>
-          <p style="font-size:13px;">Ollama (llama3) reads the text and returns strict JSON — vendor, date, amount, line items, and more.</p>
+          <div class="step-title label-accent">LLM structuring</div>
+          <p class="step-desc">Ollama (llama3) reads the text and returns strict JSON — vendor, date, amount, line items, and more.</p>
         </div>
       </div>
-      <div class="step-row" style="display:flex; gap:20px; padding:20px 0;">
-        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--accent);min-width:40px;line-height:1;">04</div>
+      <div class="step-row">
+        <div class="step-number">04</div>
         <div>
-          <div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-bottom:4px;">Download Excel</div>
-          <p style="font-size:13px;">ExcelJS generates a multi-sheet workbook: Summary, Line Items, and Raw JSON. Download instantly.</p>
+          <div class="step-title label-accent">Download Excel</div>
+          <p class="step-desc">ExcelJS generates a multi-sheet workbook: Summary, Line Items, and Raw JSON. Download instantly.</p>
         </div>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <div class="card" style="text-align:center; padding:40px;">
-      <p class="page-label" style="justify-content:center;display:flex;">Get started</p>
-      <h2 style="margin-bottom:8px;">Ready to extract?</h2>
-      <p style="margin-bottom:24px;">Make sure Ollama is running locally with the llama3 model.</p>
+    <div class="card get-started-card">
+      <p class="page-label get-started-label">Get started</p>
+      <h2 class="get-started-title mt-8">Ready to extract?</h2>
+      <p class="get-started-desc mb-24">Make sure Ollama is running locally with the llama3 model.</p>
       <a href="upload.html" class="btn btn-primary btn-lg">Open Extractor →</a>
     </div>
 
   </div>
 </main>
 
-<footer class="site-footer">
+<footer class="site-footer" role="contentinfo">
   AI Doc Extractor — Powered by Ollama + Tesseract.js + ExcelJS
 </footer>
 

@@ -8,27 +8,29 @@
 </head>
 <body>
 
-<header class="site-header">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
   <a href="index.html" class="logo">
     <div class="logo-mark">AI</div>
     <span class="logo-text">DOC<span>.</span>EXTRACT</span>
   </a>
-  <nav>
+  <nav role="navigation">
     <a href="index.html">Home</a>
     <a href="upload.html">Extract</a>
   </nav>
 </header>
 
-<main class="page">
-  <div class="container" style="max-width:540px;">
+<main class="page" role="main" id="main-content">
+  <div class="container container-upload">
 
-    <div class="card" style="text-align:center;">
+    <div class="card text-center">
 
-      <div style="font-size:48px; margin-bottom:20px; animation: spin 3s linear infinite; display:inline-block;">⚙</div>
+      <div class="processing-spinner spinner" aria-hidden="true">⚙</div>
 
-      <div class="page-label" style="display:block; text-align:center;">Processing</div>
+      <div class="page-label processing-label">Processing</div>
       <h2 id="stage-title">Uploading document...</h2>
-      <p id="stage-desc" style="margin-bottom:24px;">Sending your file to the extraction pipeline.</p>
+      <p id="stage-desc" class="mb-24">Sending your file to the extraction pipeline.</p>
 
       <div class="progress-wrap">
         <div class="progress-track">

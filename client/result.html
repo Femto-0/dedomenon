@@ -5,82 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Results — AI Doc Extractor</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* ── Auto-download banner ────────────────────────────────────────────── */
-    .auto-dl-banner {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 20px;
-      background: rgba(62,207,142,0.07);
-      border: 1px solid rgba(62,207,142,0.25);
-      border-radius: var(--radius);
-      margin-bottom: 16px;
-      font-size: 13px;
-      color: var(--success);
-      animation: fadeSlideIn 0.5s ease;
-    }
-
-    .dl-spinner {
-      width: 14px; height: 14px;
-      border: 2px solid rgba(62,207,142,0.3);
-      border-top-color: var(--success);
-      border-radius: 50%;
-      flex-shrink: 0;
-      animation: spin 0.85s linear infinite;
-    }
-    .auto-dl-banner.done .dl-spinner { display: none; }
-
-    /* ── Action card ─────────────────────────────────────────────────────── */
-    .action-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      padding: 24px 28px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 24px;
-      box-shadow: var(--shadow);
-    }
-
-    .action-card-info { flex: 1; min-width: 0; }
-
-    .action-card-btns {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(-8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
 </head>
 <body>
 
-<header class="site-header">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
   <a href="index.html" class="logo">
     <div class="logo-mark">AI</div>
     <span class="logo-text">DOC<span>.</span>EXTRACT</span>
   </a>
-  <nav>
+  <nav role="navigation">
     <a href="index.html">Home</a>
     <a href="upload.html">Extract</a>
   </nav>
 </header>
 
-<main class="page" style="justify-content:flex-start; padding-top:40px;">
+<main class="page" style="justify-content:flex-start; padding-top:40px;" role="main" id="main-content">
   <div class="container">
 
     <!-- Auto-download status banner -->
     <div class="auto-dl-banner" id="auto-dl-banner">
-      <div class="dl-spinner"></div>
+      <div class="dl-spinner spinner" aria-hidden="true"></div>
       <span>
         Preparing download:&nbsp;<strong id="dl-filename-label">…</strong>
       </span>
@@ -88,7 +34,7 @@
 
     <!-- Success notice -->
     <div class="alert alert-success mb-16">
-      <span>✓</span>
+      <span aria-hidden="true">✓</span>
       <span>Extraction complete —&nbsp;<strong id="result-filename">document</strong>&nbsp;processed successfully.</span>
     </div>
 
