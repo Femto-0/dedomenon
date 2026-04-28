@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Results — AI Doc Extractor</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Auto-download banner ────────────────────────────────────────────── */
+    .auto-dl-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 20px;
+      background: rgba(62,207,142,0.07);
+      border: 1px solid rgba(62,207,142,0.25);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--success);
+      animation: fadeSlideIn 0.5s ease;
+    }
+
+    .dl-spinner {
+      width: 14px; height: 14px;
+      border: 2px solid rgba(62,207,142,0.3);
+      border-top-color: var(--success);
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: spin 0.85s linear infinite;
+    }
+    .auto-dl-banner.done .dl-spinner { display: none; }
+
+    /* ── Action card ─────────────────────────────────────────────────────── */
+    .action-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 24px 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .action-card-info { flex: 1; min-width: 0; }
+
+    .action-card-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="logo">
+    <div class="logo-mark">AI</div>
+    <span class="logo-text">DOC<span>.</span>EXTRACT</span>
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="upload.html">Extract</a>
+  </nav>
+</header>
+
+<main class="page" style="justify-content:flex-start; padding-top:40px;">
+  <div class="container">
+
+    <!-- Auto-download status banner -->
+    <div class="auto-dl-banner" id="auto-dl-banner">
+      <div class="dl-spinner"></div>
+      <span>
+        Preparing download:&nbsp;<strong id="dl-filename-label">…</strong>
+      </span>
+    </div>
+
+    <!-- Success notice -->
+    <div class="alert alert-success mb-16">
+      <span>✓</span>
+      <span>Extraction complete —&nbsp;<strong id="result-filename">document</strong>&nbsp;processed successfully.</span>
+    </div>
+
+    <!-- Action bar: preview + download -->
+    <div class="action-card">
+      <div class="action-card-info">
+        <div class="page-label" style="display:block;">Excel Workbook Ready</div>
+        <h2 style="margin-bottom:4px;">Your data is extracted</h2>
+        <p class="text-sm">3 sheets: Summary · Line Items · Raw JSON</p>
+      </div>
+      <div class="action-card-btns">
+        <a href="preview.html" class="btn btn-outline" id="preview-btn">
+          ⊞&nbsp; Quick Preview
+        </a>
+        <a href="#" class="btn btn-primary btn-lg" id="download-btn">
+          ↓&nbsp; Download .xlsx
+        </a>
+      </div>
+    </div>
+
+    <!-- Extracted field grid -->
+    <h2 class="mb-16">Extracted Fields</h2>
+    <div class="data-grid" id="summary-grid"></div>
+
+    <!-- Line items (shown only when present) -->
+    <div id="items-section" class="hidden">
+      <div class="divider"></div>
+      <h2 class="mb-16">Line Items</h2>
+      <div style="overflow-x:auto; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);">
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Description</th>
+              <th class="text-center">Qty</th>
+              <th class="text-right">Unit Price</th>
+              <th class="text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody id="items-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Raw JSON -->
+    <div class="flex justify-between items-center mb-16">
+      <h2 style="margin:0;">Raw JSON</h2>
+      <button class="btn btn-ghost text-sm" id="copy-btn">Copy JSON</button>
+    </div>
+    <div class="json-viewer" id="json-viewer">
+      <span class="text-muted">Loading…</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="flex gap-12" style="flex-wrap:wrap;">
+      <a href="upload.html" class="btn btn-primary">↑ Extract Another</a>
+      <a href="preview.html" class="btn btn-outline">⊞ Preview Workbook</a>
+      <a href="index.html" class="btn btn-ghost">← Home</a>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  AI Doc Extractor — Powered by Ollama + Tesseract.js + ExcelJS
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
