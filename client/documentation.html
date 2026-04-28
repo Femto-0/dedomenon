@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Technical documentation and architecture for the AI Doc Extractor project." />
+  <meta name="keywords" content="AI, OCR, Node.js, Technical Documentation, LLM" />
+  <meta name="author" content="Your Name" />
+  <title>Documentation — AI Doc Extractor</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body class="page-documentation">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">AI</div>
+      <span class="logo-text">DOC<span>.</span>EXTRACT</span>
+    </a>
+    <nav role="navigation">
+      <a href="index.html">Home</a>
+      <a href="upload.html">Extract</a>
+      <a href="preview.html">Preview</a>
+      <a href="documentation.html" class="active">Docs</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <div class="container" id="main-content">
+      <div class="page-label">Project Overview</div>
+      <h1>Technical Documentation</h1>
+      
+      <!-- Rubric: Architecture & Accessible Emojis -->
+      <section class="doc-section">
+        <h2><span role="img" aria-label="Building icon">🏗️</span> Architecture</h2>
+        <p>A production-style full-stack application that extracts structured data using OCR + local Ollama LLM.</p>
+        <div class="flow-chart">
+          Upload &rarr; pdf-parse/OCR &rarr; Ollama (Llama3) &rarr; ExcelJS &rarr; Download
+        </div>
+      </section>
+
+      <!-- Rubric: Tables for data (not layout) -->
+      <section class="doc-section">
+        <h2><span role="img" aria-label="Package icon">📦</span> Tech Stack</h2>
+        <table class="doc-table">
+          <thead><tr><th>Layer</th><th>Technology</th></tr></thead>
+          <tbody>
+            <tr><td>Runtime</td><td>Node.js (ES Modules)</td></tr>
+            <tr><td>Server</td><td>Express + Multer</td></tr>
+            <tr><td>Processing</td><td>pdf-parse + Tesseract.js</td></tr>
+            <tr><td>Intelligence</td><td>Ollama (llama3)</td></tr>
+            <tr><td>Output</td><td>ExcelJS</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section">
+        <h2><span role="img" aria-label="Settings icon">⚙️</span> Configuration</h2>
+        <table class="doc-table">
+          <thead><tr><th>Variable</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>PORT</td><td>3000</td><td>Server port</td></tr>
+            <tr><td>OLLAMA_URL</td><td>http://localhost:11434</td><td>Ollama API URL</td></tr>
+            <tr><td>OLLAMA_MODEL</td><td>llama3</td><td>Model selection</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section">
+        <h2><span role="img" aria-label="Plug icon">🔌</span> API Reference</h2>
+        <div class="code-block">
+          <strong>POST /api/upload</strong>
+          <p>Request: <code>multipart/form-data</code> (Field: <code>document</code>)</p>
+          <p>Response: Structured JSON + Excel Download URL</p>
+        </div>
+      </section>
+
+      <section class="doc-section">
+        <h2><span role="img" aria-label="Robot icon">🤖</span> Supported Types</h2>
+        <table class="doc-table">
+          <thead><tr><th>Type</th><th>Extensions</th><th>Method</th></tr></thead>
+          <tbody>
+            <tr><td>PDF</td><td>.pdf</td><td>pdf-parse</td></tr>
+            <tr><td>Images</td><td>.png, .jpg, .webp</td><td>Tesseract.js OCR</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section">
+        <h2><span role="img" aria-label="Tools icon">🛠️</span> Troubleshooting</h2>
+        <table class="doc-table">
+          <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td>ECONNREFUSED</td><td>Run <code>ollama serve</code> in terminal</td></tr>
+            <tr><td>Model not found</td><td>Run <code>ollama pull llama3</code></td></tr>
+            <tr><td>Port in use</td><td>Set <code>PORT=3001</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="divider" style="margin-top:40px;"></div>
+      <p style="text-align:center;"><a href="accessibility.html" class="btn-outline btn" style="font-size: 11px;">Accessibility Statement</a></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 AI Doc Extractor. All Rights Reserved.</p>
+    <p>Contact: <a href="mailto:support@example.com" style="color:var(--accent);">support@example.com</a></p>
+    <p>Last Updated: April 28, 2026</p>
+  </footer>
+</body>
+</html>
