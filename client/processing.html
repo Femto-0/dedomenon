@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Processing — AI Doc Extractor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="logo">
+    <div class="logo-mark">AI</div>
+    <span class="logo-text">DOC<span>.</span>EXTRACT</span>
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="upload.html">Extract</a>
+  </nav>
+</header>
+
+<main class="page">
+  <div class="container" style="max-width:540px;">
+
+    <div class="card" style="text-align:center;">
+
+      <div style="font-size:48px; margin-bottom:20px; animation: spin 3s linear infinite; display:inline-block;">⚙</div>
+
+      <div class="page-label" style="display:block; text-align:center;">Processing</div>
+      <h2 id="stage-title">Uploading document...</h2>
+      <p id="stage-desc" style="margin-bottom:24px;">Sending your file to the extraction pipeline.</p>
+
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-bar indeterminate" id="progress-bar"></div>
+        </div>
+      </div>
+
+      <ul class="steps-list" id="steps-list">
+        <li class="step-item active" id="step-upload">
+          <div class="step-dot"></div>
+          <span>Uploading file</span>
+        </li>
+        <li class="step-item" id="step-extract">
+          <div class="step-dot"></div>
+          <span>Extracting text (PDF / OCR)</span>
+        </li>
+        <li class="step-item" id="step-llm">
+          <div class="step-dot"></div>
+          <span>Analysing with Ollama LLM</span>
+        </li>
+        <li class="step-item" id="step-excel">
+          <div class="step-dot"></div>
+          <span>Generating Excel workbook</span>
+        </li>
+      </ul>
+
+      <p class="text-xs text-muted mt-16">
+        LLM inference may take 10–60 seconds depending on model size.
+      </p>
+
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  AI Doc Extractor — Powered by Ollama + Tesseract.js + ExcelJS
+</footer>
+
+<style>
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+</style>
+
+<script src="main.js"></script>
+</body>
+</html>
