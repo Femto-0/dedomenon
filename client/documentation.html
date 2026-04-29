@@ -58,56 +58,11 @@
             <tr><td>Runtime</td><td>Node.js (ES Modules)</td></tr>
             <tr><td>Server</td><td>Express + Multer</td></tr>
             <tr><td>Processing</td><td>pdf-parse + Tesseract.js</td></tr>
-            <tr><td>Intelligence</td><td>Ollama (llama3)</td></tr>
+            <tr><td>Intelligence</td><td>Ollama (qwen2.5)</td></tr>
             <tr><td>Output</td><td>ExcelJS</td></tr>
           </tbody>
         </table>
       </section>
-
-      <section class="doc-section">
-        <h2><span role="img" aria-label="Settings icon">⚙️</span> Configuration</h2>
-        <table class="doc-table">
-          <thead><tr><th>Variable</th><th>Default</th><th>Description</th></tr></thead>
-          <tbody>
-            <tr><td>PORT</td><td>3000</td><td>Server port</td></tr>
-            <tr><td>OLLAMA_URL</td><td>http://localhost:11434</td><td>Ollama API URL</td></tr>
-            <tr><td>OLLAMA_MODEL</td><td>llama3</td><td>Model selection</td></tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section class="doc-section">
-        <h2><span role="img" aria-label="Plug icon">🔌</span> API Reference</h2>
-        <div class="code-block">
-          <strong>POST /api/upload</strong>
-          <p>Request: <code>multipart/form-data</code> (Field: <code>document</code>)</p>
-          <p>Response: Structured JSON + Excel Download URL</p>
-        </div>
-      </section>
-
-      <section class="doc-section">
-        <h2><span role="img" aria-label="Robot icon">🤖</span> Supported Types</h2>
-        <table class="doc-table">
-          <thead><tr><th>Type</th><th>Extensions</th><th>Method</th></tr></thead>
-          <tbody>
-            <tr><td>PDF</td><td>.pdf</td><td>pdf-parse</td></tr>
-            <tr><td>Images</td><td>.png, .jpg, .webp</td><td>Tesseract.js OCR</td></tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section class="doc-section">
-        <h2><span role="img" aria-label="Tools icon">🛠️</span> Troubleshooting</h2>
-        <table class="doc-table">
-          <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
-          <tbody>
-            <tr><td>ECONNREFUSED</td><td>Run <code>ollama serve</code> in terminal</td></tr>
-            <tr><td>Model not found</td><td>Run <code>ollama pull llama3</code></td></tr>
-            <tr><td>Port in use</td><td>Set <code>PORT=3001</code></td></tr>
-          </tbody>
-        </table>
-      </section>
-  </main>
 
   <footer class="site-footer" role="contentinfo">
     <div class="footer-container">
