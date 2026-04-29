@@ -36,6 +36,40 @@
   top: 6px;
 }
 
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--accent2);
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Accessibility Statement Page */
+.accessibility-content {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.accessibility-content h1,
+.accessibility-content h2 {
+  text-align: center;
+}
+
+.accessibility-content ul {
+  text-align: left;
+  display: inline-block;
+}
+
 /* Reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1135,6 +1169,25 @@ p { color: var(--muted); line-height: 1.7; }
 
 .doc-section {
   margin-top: 40px;
+}
+
+/* Video Container */
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 24px auto;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.video-container iframe {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
 }
 
 /* Using your variables for the table */
